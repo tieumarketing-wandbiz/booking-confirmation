@@ -141,7 +141,16 @@ function exportFileBase() {
 
 async function capturePage() {
   if (!window.html2canvas) throw new Error('html2canvas is not loaded');
-  return window.html2canvas(page, { scale: 2, useCORS: true, backgroundColor: null });
+  const previousTransform = page.style.transform;
+  const previousMarginBottom = page.style.marginBottom;
+  page.style.transform = '';
+  page.style.marginBottom = '';
+  try {
+    return await window.html2canvas(page, { scale: 2, useCORS: true, backgroundColor: null });
+  } finally {
+    page.style.transform = previousTransform;
+    page.style.marginBottom = previousMarginBottom;
+  }
 }
 
 pngButton.addEventListener('click', async () => {
