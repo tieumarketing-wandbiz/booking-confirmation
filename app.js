@@ -1,17 +1,253 @@
-const f=document.querySelector('#form'),inp=document.querySelector('#inputs'),rows=document.querySelector('#rows');let r=[{list:'Mar Jo Rie\nAshley Olalia',type:'Deluxe balcony mountain view',pack:'—',count:2,rate:2000000,bed:'—'}];const vi=['XÁC NHẬN ĐẶT PHÒNG','Kính gửi','Cảm ơn quý khách đã lựa chọn La Đỏ Homestay.<br>Chúng tôi hân hạnh xác nhận đặt phòng.','THÔNG TIN ĐẶT PHÒNG','Tên khách:','Số đêm:','Ngày nhận:','Ngày trả:','Giờ nhận:','Giờ trả:','CHI TIẾT','Số phòng','Danh sách khách','Loại phòng','Gói','Số khách','Giá (VND)','Giường phụ','Tổng cộng (VND):','Đặt cọc & thanh toán:','DỊCH VỤ & ĐIỀU KIỆN','Dịch vụ bao gồm','Chính sách huỷ','Xin cảm ơn & Trân trọng!','Hẹn gặp lại quý khách tại Sapa.'];const en=['BOOKING CONFIRMATION','Dear Ms/Mr','Thank you for choosing La Đỏ Homestay.<br>We are pleased to confirm your reservation.','BOOKING INFORMATION','Guest Name:','Number of Nights:','Check-in Date:','Check-out Date:','Check-in Time:','Check-out Time:','DETAILS','No. of Rooms','Guest List','Room Type','Package','No. of Guests','Room Rate (VND)','Extra Bed','Total (VND):','Deposit & Payment:','PACKAGE & CONDITIONS','Included Services','Cancellation Policy','Thank you & Best regards!','We look forward to welcoming you in Sapa.'];const ids=['title','hello','lead','book','nameL','nightL','inL','outL','inTL','outTL','detail','roomsL','listL','typeL','packL','countL','rateL','bedL','totalL','depositL','term','servicesL','policyL','thanks','foot'];const fmt=n=>new Intl.NumberFormat('en-US').format(n||0);function editors(){inp.innerHTML=r.map((x,i)=>`<div class="room"><b>Phòng ${i+1}</b><textarea data-i="${i}" data-k="list">${x.list}</textarea><input data-i="${i}" data-k="type" value="${x.type}"><div class="two"><input data-i="${i}" data-k="count" type="number" value="${x.count}"><input data-i="${i}" data-k="rate" type="number" value="${x.rate}"></div></div>`).join('');inp.querySelectorAll('input,textarea').forEach(e=>e.oninput=()=>{r[e.target.dataset.i][e.target.dataset.k]=e.target.value;update()})}function update(){let v=Object.fromEntries(new FormData(f)),a=document.querySelector('#lang').value==='vi'?vi:en;ids.forEach((id,i)=>document.querySelector('#'+id).innerHTML=a[i]);document.querySelector('#hello').textContent=`${a[1]} ${v.guest}`;let n=Math.max(0,Math.round((new Date(v.out)-new Date(v.in))/86400000));guest.textContent=v.guest;checkin.textContent=v.in;checkout.textContent=v.out;inTime.textContent=v.inTime;outTime.textContent=v.out;nights.textContent=n;rows.innerHTML=r.map((x,i)=>`<tr><td>${i+1}</td><td>1</td><td>${x.list}</td><td>${x.type}</td><td>${x.pack}</td><td>${x.count}</td><td>${fmt(x.rate)}</td><td>${x.bed||'—'}</td></tr>`).join('');total.textContent=fmt(r.reduce((s,x)=>s+(+x.rate||0),0));deposit.textContent=fmt(v.deposit)+' VND';services.textContent=v.services;policy.textContent=v.policy}add.onclick=()=>{r.push({list:'',type:'',pack:'—',count:1,rate:0,bed:'—'});editors();update()};f.oninput=update;lang.onchange=update;editors();update();async function cap(){return html2canvas(page,{scale:2,useCORS:true})}png.onclick=async()=>{let c=await cap(),a=document.createElement('a');a.href=c.toDataURL();a.download='booking.png';a.click()};pdf.onclick=async()=>{let c=await cap(),p=new jspdf.jsPDF({unit:'mm',format:'a4'});p.addImage(c.toDataURL(),'PNG',0,0,210,297);p.save('booking.pdf')};
-document.querySelector('footer').insertAdjacentHTML('afterbegin','<img src="assets/footer-message.png" alt="Thank you & Best regards">');
-const footerBlock=document.querySelector('footer'),documentBlock=document.querySelector('.doc');document.querySelector('#page').insertBefore(footerBlock,documentBlock);
-function addRemoveButtons(){document.querySelectorAll('.room').forEach((room,index)=>{if(room.querySelector('.delete-room'))return;const button=document.createElement('button');button.type='button';button.className='delete-room';button.textContent='× Xoá phòng';button.onclick=()=>{if(r.length===1)return;r.splice(index,1);editors();update()};room.prepend(button)})}new MutationObserver(addRemoveButtons).observe(inp,{childList:true});setTimeout(addRemoveButtons,0);
-function serviceBullets(){const value=new FormData(f).get('services')||'';document.querySelector('#services').innerHTML=value.split(/\n+/).filter(Boolean).map(line=>`<span>• ${line}</span>`).join('')}f.addEventListener('input',serviceBullets);document.querySelector('#lang').addEventListener('change',serviceBullets);serviceBullets();
-function formatDeposit(){const vietnamese=document.querySelector('#lang').value==='vi';document.querySelector('#depositL').textContent=vietnamese?'Đặt cọc & thanh toán (VND):':'Deposit & Payment (VND):';document.querySelector('#deposit').textContent=fmt(new FormData(f).get('deposit'))}f.addEventListener('input',formatDeposit);document.querySelector('#lang').addEventListener('change',formatDeposit);formatDeposit();
-function englishLead(){if(document.querySelector('#lang').value==='en')document.querySelector('#lead').innerHTML='Thank you for choosing La Do Homestay.<br>We are pleased to confirm your reservation.'}f.addEventListener('input',englishLead);document.querySelector('#lang').addEventListener('change',englishLead);englishLead();
-f.addEventListener('change',update);
-const previewButton=document.createElement('button'),closePreviewButton=document.createElement('button');previewButton.type=closePreviewButton.type='button';previewButton.className='mobile-preview-button';closePreviewButton.className='close-preview-button';previewButton.textContent='▣ Xem preview toàn màn';closePreviewButton.textContent='× Đóng';document.querySelector('.actions').before(previewButton);document.querySelector('.preview').prepend(closePreviewButton);previewButton.onclick=()=>{document.body.classList.add('preview-mode');window.scrollTo(0,0)};closePreviewButton.onclick=()=>document.body.classList.remove('preview-mode');
-const previewSurface=document.querySelector('.preview'),pageSurface=document.querySelector('#page'),activePointers=new Map();let fitScale=1,zoomScale=1,panX=0,panY=0,startPanX=0,startPanY=0,startDistance=0,startZoom=1;const mobilePreview=()=>matchMedia('(max-width:1024px)').matches;function renderGesture(){pageSurface.style.transform=`translate(${panX}px,${panY}px) scale(${zoomScale})`;pageSurface.style.marginBottom=`${1074*(zoomScale-1)}px`}function resetGesture(){if(!mobilePreview()){pageSurface.style.transform='';pageSurface.style.marginBottom='';return}fitScale=Math.min(1,(innerWidth-16)/760);zoomScale=fitScale;panX=panY=0;renderGesture()}function distance(){const points=[...activePointers.values()];return Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y)}previewSurface.addEventListener('pointerdown',event=>{if(!mobilePreview())return;activePointers.set(event.pointerId,{x:event.clientX,y:event.clientY});previewSurface.setPointerCapture(event.pointerId);if(activePointers.size===1){startPanX=event.clientX-panX;startPanY=event.clientY-panY}else if(activePointers.size===2){startDistance=distance();startZoom=zoomScale}});previewSurface.addEventListener('pointermove',event=>{if(!activePointers.has(event.pointerId)||!mobilePreview())return;activePointers.set(event.pointerId,{x:event.clientX,y:event.clientY});if(activePointers.size===1){panX=event.clientX-startPanX;panY=event.clientY-startPanY}else if(activePointers.size===2){zoomScale=Math.max(fitScale,Math.min(2.5,startZoom*distance()/startDistance))}renderGesture()});['pointerup','pointercancel'].forEach(type=>previewSurface.addEventListener(type,event=>activePointers.delete(event.pointerId)));addEventListener('resize',resetGesture);resetGesture();
-function exportFileBase(){const values=new FormData(f),guest=(values.get('guest')||'khach-hang').trim().replace(/[\\/:*?"<>|]+/g,'-').replace(/\s+/g,'-'),date=values.get('in')||'ngay-nhan';return `${guest}_${date}`}png.onclick=async()=>{const canvas=await cap(),link=document.createElement('a');link.href=canvas.toDataURL();link.download=`${exportFileBase()}.png`;link.click()};pdf.onclick=async()=>{const canvas=await cap(),documentPdf=new jspdf.jsPDF({unit:'mm',format:'a4'});documentPdf.addImage(canvas.toDataURL(),'PNG',0,0,210,297);documentPdf.save(`${exportFileBase()}.pdf`)};
-previewSurface.addEventListener('pointermove',()=>{if(activePointers.size===1&&mobilePreview()){panX=0;panY=0;renderGesture()}});
-const printButton=document.createElement('button');printButton.type='button';printButton.id='print';printButton.textContent='In';document.querySelector('.actions').append(printButton);printButton.onclick=()=>window.print();
-const gesturePointers=new Map();let gestureStart=null;function gestureMidpoint(){const points=[...gesturePointers.values()];return{x:(points[0].x+points[1].x)/2,y:(points[0].y+points[1].y)/2}}function gestureDistance(){const points=[...gesturePointers.values()];return Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y)}function startGesture(){if(gesturePointers.size!==2)return;const midpoint=gestureMidpoint();gestureStart={distance:gestureDistance(),scale:zoomScale,panX,panY,midpoint}}function gestureDown(event){if(!mobilePreview())return;event.stopImmediatePropagation();gesturePointers.set(event.pointerId,{x:event.clientX,y:event.clientY});previewSurface.setPointerCapture(event.pointerId);startGesture()}function gestureMove(event){if(!gesturePointers.has(event.pointerId)||!mobilePreview())return;event.stopImmediatePropagation();gesturePointers.set(event.pointerId,{x:event.clientX,y:event.clientY});if(!gestureStart||gesturePointers.size!==2)return;const midpoint=gestureMidpoint(),nextScale=Math.max(fitScale,Math.min(2.5,gestureStart.scale*gestureDistance()/gestureStart.distance)),localX=(gestureStart.midpoint.x-gestureStart.panX)/gestureStart.scale,localY=(gestureStart.midpoint.y-gestureStart.panY)/gestureStart.scale;zoomScale=nextScale;panX=midpoint.x-localX*nextScale;panY=midpoint.y-localY*nextScale;renderGesture()}function gestureEnd(event){if(!gesturePointers.has(event.pointerId))return;event.stopImmediatePropagation();gesturePointers.delete(event.pointerId);gestureStart=null;if(gesturePointers.size===2)startGesture()}previewSurface.addEventListener('pointerdown',gestureDown,true);previewSurface.addEventListener('pointermove',gestureMove,true);previewSurface.addEventListener('pointerup',gestureEnd,true);previewSurface.addEventListener('pointercancel',gestureEnd,true);
-document.querySelector('header h2').textContent='Lá Đỏ Homestay';
-document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap">');
-document.querySelector('#page').append(document.querySelector('footer'));
+const form = document.querySelector('#form');
+const inputs = document.querySelector('#inputs');
+const rows = document.querySelector('#rows');
+const page = document.querySelector('#page');
+const previewSurface = document.querySelector('.preview');
+const language = document.querySelector('#lang');
+const addRoom = document.querySelector('#add');
+const pngButton = document.querySelector('#png');
+const pdfButton = document.querySelector('#pdf');
+
+const fields = {
+  greetingGuest: document.querySelector('#greetingGuest'),
+  guest: document.querySelector('#guest'),
+  nights: document.querySelector('#nights'),
+  checkin: document.querySelector('#checkin'),
+  checkout: document.querySelector('#checkout'),
+  inTime: document.querySelector('#inTime'),
+  outTime: document.querySelector('#outTime'),
+  total: document.querySelector('#total'),
+  deposit: document.querySelector('#deposit'),
+  services: document.querySelector('#services'),
+  policy: document.querySelector('#policy')
+};
+
+let rooms = [{
+  list: 'Mar Jo Rie\nAshley Olalia',
+  type: 'Deluxe balcony mountain view',
+  pack: '—',
+  count: 2,
+  rate: 2000000,
+  bed: '—'
+}];
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+function formatNumber(value) {
+  return new Intl.NumberFormat('en-US').format(Number(value) || 0);
+}
+
+function getNights(checkIn, checkOut) {
+  if (!checkIn || !checkOut) return 0;
+  const start = new Date(`${checkIn}T00:00:00`);
+  const end = new Date(`${checkOut}T00:00:00`);
+  return Math.max(0, Math.round((end - start) / 86400000));
+}
+
+function renderRoomEditors() {
+  inputs.innerHTML = rooms.map((room, index) => `
+    <div class="room">
+      <button class="delete-room" type="button" data-remove-room="${index}">× Xoá phòng</button>
+      <b>Phòng ${index + 1}</b>
+      <textarea data-room="${index}" data-key="list">${escapeHtml(room.list)}</textarea>
+      <input data-room="${index}" data-key="type" value="${escapeHtml(room.type)}">
+      <div class="two">
+        <input data-room="${index}" data-key="count" type="number" value="${escapeHtml(room.count)}">
+        <input data-room="${index}" data-key="rate" type="number" value="${escapeHtml(room.rate)}">
+      </div>
+    </div>`).join('');
+
+  inputs.querySelectorAll('[data-room][data-key]').forEach((input) => {
+    input.addEventListener('input', (event) => {
+      const target = event.currentTarget;
+      rooms[Number(target.dataset.room)][target.dataset.key] = target.value;
+      updatePreview();
+    });
+  });
+
+  inputs.querySelectorAll('[data-remove-room]').forEach((button) => {
+    button.addEventListener('click', () => {
+      if (rooms.length === 1) return;
+      rooms.splice(Number(button.dataset.removeRoom), 1);
+      renderRoomEditors();
+      updatePreview();
+    });
+  });
+}
+
+function renderServices(value) {
+  fields.services.innerHTML = String(value || '')
+    .split(/\n+/)
+    .filter(Boolean)
+    .map((line) => `<span>• ${escapeHtml(line)}</span>`)
+    .join('');
+}
+
+function updatePreview() {
+  const values = Object.fromEntries(new FormData(form));
+  const nights = getNights(values.in, values.out);
+  const total = rooms.reduce((sum, room) => sum + (Number(room.rate) || 0), 0);
+
+  fields.greetingGuest.textContent = values.guest || '';
+  fields.guest.textContent = values.guest || '';
+  fields.nights.textContent = String(nights);
+  fields.checkin.textContent = values.in || '';
+  fields.checkout.textContent = values.out || '';
+  fields.inTime.textContent = values.inTime || '';
+  fields.outTime.textContent = values.outTime || '';
+  fields.total.textContent = `${formatNumber(total)} VND`;
+  fields.deposit.textContent = `${formatNumber(values.deposit)} VND`;
+  fields.policy.textContent = values.policy || '';
+  renderServices(values.services);
+
+  rows.innerHTML = rooms.map((room, index) => `
+    <div class="room-row">
+      <span>${index + 1}</span>
+      <span>1</span>
+      <span class="room-guests">${escapeHtml(room.list || '')}</span>
+      <span class="room-type">${escapeHtml(room.type || '')}</span>
+      <span>${escapeHtml(room.pack || '—')}</span>
+      <span>${escapeHtml(room.count || 0)}</span>
+      <span>${formatNumber(room.rate)}</span>
+      <span>${escapeHtml(room.bed || '—')}</span>
+    </div>`).join('');
+}
+
+addRoom.addEventListener('click', () => {
+  rooms.push({ list: '', type: '', pack: '—', count: 1, rate: 0, bed: '—' });
+  renderRoomEditors();
+  updatePreview();
+});
+
+form.addEventListener('input', updatePreview);
+form.addEventListener('change', updatePreview);
+language.addEventListener('change', updatePreview);
+
+function exportFileBase() {
+  const values = new FormData(form);
+  const guest = (values.get('guest') || 'khach-hang')
+    .trim()
+    .replace(/[\\/:*?"<>|]+/g, '-')
+    .replace(/\s+/g, '-');
+  return `${guest}_${values.get('in') || 'ngay-nhan'}`;
+}
+
+async function capturePage() {
+  if (!window.html2canvas) throw new Error('html2canvas is not loaded');
+  return window.html2canvas(page, { scale: 2, useCORS: true, backgroundColor: null });
+}
+
+pngButton.addEventListener('click', async () => {
+  const canvas = await capturePage();
+  const link = document.createElement('a');
+  link.href = canvas.toDataURL('image/png');
+  link.download = `${exportFileBase()}.png`;
+  link.click();
+});
+
+pdfButton.addEventListener('click', async () => {
+  const canvas = await capturePage();
+  const pdf = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
+  pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
+  pdf.save(`${exportFileBase()}.pdf`);
+});
+
+const previewButton = document.createElement('button');
+previewButton.type = 'button';
+previewButton.className = 'mobile-preview-button';
+previewButton.textContent = '▣ Xem preview toàn màn';
+document.querySelector('.actions').before(previewButton);
+
+const closePreviewButton = document.createElement('button');
+closePreviewButton.type = 'button';
+closePreviewButton.className = 'close-preview-button';
+closePreviewButton.textContent = '× Đóng';
+previewSurface.prepend(closePreviewButton);
+
+previewButton.addEventListener('click', () => {
+  document.body.classList.add('preview-mode');
+  resetPreviewScale();
+  window.scrollTo(0, 0);
+});
+
+closePreviewButton.addEventListener('click', () => {
+  document.body.classList.remove('preview-mode');
+  resetPreviewScale();
+});
+
+let previewScale = 1;
+let fitScale = 1;
+
+function isSmallViewport() {
+  return window.matchMedia('(max-width: 1024px)').matches;
+}
+
+function renderPreviewScale() {
+  page.style.transform = isSmallViewport() ? `scale(${previewScale})` : '';
+  page.style.marginBottom = isSmallViewport()
+    ? `${page.offsetHeight * (previewScale - 1)}px`
+    : '';
+}
+
+function resetPreviewScale() {
+  if (!isSmallViewport()) {
+    previewScale = 1;
+    page.style.transform = '';
+    page.style.marginBottom = '';
+    return;
+  }
+  fitScale = Math.min(1, (window.innerWidth - 16) / 760);
+  previewScale = fitScale;
+  renderPreviewScale();
+}
+
+const pointers = new Map();
+let pinchStart = null;
+
+function pointerDistance() {
+  const points = [...pointers.values()];
+  return Math.hypot(points[0].x - points[1].x, points[0].y - points[1].y);
+}
+
+previewSurface.addEventListener('pointerdown', (event) => {
+  if (!isSmallViewport()) return;
+  pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+  previewSurface.setPointerCapture(event.pointerId);
+  if (pointers.size === 2) pinchStart = { distance: pointerDistance(), scale: previewScale };
+});
+
+previewSurface.addEventListener('pointermove', (event) => {
+  if (!pointers.has(event.pointerId) || !isSmallViewport()) return;
+  pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+  if (pointers.size === 2 && pinchStart) {
+    previewScale = Math.max(fitScale, Math.min(2.5, pinchStart.scale * pointerDistance() / pinchStart.distance));
+    renderPreviewScale();
+  }
+});
+
+['pointerup', 'pointercancel'].forEach((eventName) => {
+  previewSurface.addEventListener(eventName, (event) => {
+    pointers.delete(event.pointerId);
+    if (pointers.size < 2) pinchStart = null;
+  });
+});
+
+window.addEventListener('resize', resetPreviewScale);
+
+const printButton = document.createElement('button');
+printButton.type = 'button';
+printButton.id = 'print';
+printButton.textContent = 'In';
+document.querySelector('.actions').append(printButton);
+printButton.addEventListener('click', () => window.print());
+
+renderRoomEditors();
+updatePreview();
+resetPreviewScale();
