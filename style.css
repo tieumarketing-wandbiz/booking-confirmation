@@ -56,6 +56,8 @@ button { padding: 8px; border: 0; border-radius: 5px; background: var(--green); 
 .booking-field > span:first-of-type { width: 1.25em; flex: 0 0 auto; color: var(--gold); }
 .booking-field strong { min-width: 0; margin-left: auto; padding-left: 5px; border-bottom: 1px dotted #aaa69c; font-weight: 400; text-align: right; white-space: nowrap; }
 .details-table { width: 100%; border: 1.5px solid var(--gold); border-radius: 11px; border-spacing: 0; overflow: hidden; table-layout: fixed; font-size: clamp(7px, 1.2vw, 10px); }
+.details-table thead, .details-table tbody tr { display: table; width: 100%; border-spacing: 0; table-layout: fixed; }
+.details-table tbody { display: block; max-height: 56px; overflow: hidden; }
 .details-table th { padding: clamp(5px, .9vw, 8px) 2px; background: var(--green); color: #fff; font-weight: 400; line-height: 1.05; }
 .details-table th:nth-child(1), .details-table td:nth-child(1) { width: 8%; }
 .details-table th:nth-child(2), .details-table td:nth-child(2) { width: 12%; }
