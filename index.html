@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -11,20 +11,21 @@
   <main class="app">
     <aside>
       <b>LA ĐỎ</b>
-      <h1>Tạo phiếu đặt phòng</h1>
-      <label>Ngôn ngữ<select id="lang"><option value="vi">Tiếng Việt</option><option value="en" selected>English</option></select></label>
+      <h1>Create booking confirmation</h1>
+      <label>Language<select id="lang"><option value="vi">Vietnamese</option><option value="en" selected>English</option></select></label>
       <form id="form">
-        <label>Tên khách<input name="guest" value="Mar Jo Rie"></label>
-        <div class="two"><label>Ngày nhận<input name="in" type="date" value="2026-06-03"></label><label>Ngày trả<input name="out" type="date" value="2026-06-04"></label></div>
-        <div class="two"><label>Giờ nhận<input name="inTime" type="time" value="14:00"></label><label>Giờ trả<input name="outTime" type="time" value="11:00"></label></div>
-        <label>Tiền cọc<input name="deposit" type="number" value="975000"></label>
-        <label>Dịch vụ<textarea name="services">Ăn sáng buffet
-Trà, cà phê và nước uống</textarea></label>
-        <label>Chính sách huỷ<input name="policy" value="Không hoàn tiền, không hủy phòng"></label>
+        <label>Guest name<input name="guest" value="Mar Jo Rie"></label>
+        <div class="two"><label>Check-in date<input name="in" type="date" value="2026-06-03"></label><label>Check-out date<input name="out" type="date" value="2026-06-04"></label></div>
+        <div class="two"><label>Check-in time<input name="inTime" type="time" value="14:00"></label><label>Check-out time<input name="outTime" type="time" value="11:00"></label></div>
+        <label>Deposit<input name="deposit" type="number" value="975000"></label>
+        <label>Included services<textarea name="services">Breakfast buffet
+Tea, coffee, and drinking water</textarea></label>
+        <label>Cancellation policy<input name="policy" value="Non-refundable; cancellation is not permitted."></label>
       </form>
-      <h3>Chi tiết phòng <button id="add">+ Thêm</button></h3>
+      <h3>Room details <button id="add" type="button">+ Add room</button></h3>
       <div id="inputs"></div>
-      <div class="actions"><button id="png">Xuất PNG</button><button id="pdf">Xuất PDF</button></div>
+      <div class="actions"><button id="png" type="button">Export PNG</button><button id="pdf" type="button">Export PDF</button></div>
+      <p id="exportStatus" class="export-status" role="status" aria-live="polite"></p>
     </aside>
     <section class="preview">
       <article id="page" aria-label="Booking confirmation preview">

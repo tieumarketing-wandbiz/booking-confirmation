@@ -147,14 +147,14 @@ function updatePreview() {
   roomRows.innerHTML = rooms.map((room, index) => {
     const adults = `${room.count || 0} adults`;
     return `<tr>
-      <td>${String(index + 1).padStart(2, '0')}</td>
-      <td>1</td>
-      <td>${escapeHtml(room.list)}</td>
-      <td>${escapeHtml(room.type)}</td>
-      <td>${escapeHtml(room.pack)}</td>
-      <td>${escapeHtml(adults)}</td>
-      <td>${escapeHtml(formatNumber(roomRate(room.rate)))}</td>
-      <td>${escapeHtml(room.bed || '—')}</td>
+      <td><span class="text-clamp">${String(index + 1).padStart(2, '0')}</span></td>
+      <td><span class="text-clamp">1</span></td>
+      <td><span class="text-clamp">${escapeHtml(room.list)}</span></td>
+      <td><span class="text-clamp">${escapeHtml(room.type)}</span></td>
+      <td><span class="text-clamp">${escapeHtml(room.pack)}</span></td>
+      <td><span class="text-clamp">${escapeHtml(adults)}</span></td>
+      <td><span class="text-clamp">${escapeHtml(formatNumber(roomRate(room.rate)))}</span></td>
+      <td><span class="text-clamp">${escapeHtml(room.bed || '—')}</span></td>
     </tr>`;
   }).join('');
 
@@ -169,6 +169,7 @@ function updatePreview() {
 }
 
 async function capturePage() {
+  requireExportDependencies();
   const originalTransform = page.style.transform;
   const originalMarginBottom = page.style.marginBottom;
 
@@ -181,6 +182,26 @@ async function capturePage() {
     page.style.transform = originalTransform;
     page.style.marginBottom = originalMarginBottom;
   }
+}
+
+function requireExportDependencies(needsPdf = false) {
+  if (typeof window.html2canvas !== 'function') {
+    throw new Error('html2canvas is unavailable. Check your internet connection and try again.');
+  }
+
+  if (needsPdf && typeof window.jspdf?.jsPDF !== 'function') {
+    throw new Error('jsPDF is unavailable. Check your internet connection and try again.');
+  }
+}
+
+function showExportError(error) {
+  const status = document.querySelector('#exportStatus');
+  status.textContent = `Export failed: ${error instanceof Error ? error.message : 'Please try again.'}`;
+}
+
+function clearPagePresentationStyles() {
+  page.style.removeProperty('transform');
+  page.style.removeProperty('margin-bottom');
 }
 
 function exportFileBase() {
@@ -209,14 +230,23 @@ form.addEventListener('input', updatePreview);
 form.addEventListener('change', updatePreview);
 
 document.querySelector('#png').addEventListener('click', async () => {
-  downloadCanvas(await capturePage(), 'png');
+  try {
+    downloadCanvas(await capturePage(), 'png');
+  } catch (error) {
+    showExportError(error);
+  }
 });
 
 document.querySelector('#pdf').addEventListener('click', async () => {
-  const canvas = await capturePage();
-  const pdf = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
-  pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
-  pdf.save(`${exportFileBase()}.pdf`);
+  try {
+    requireExportDependencies(true);
+    const canvas = await capturePage();
+    const pdf = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
+    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
+    pdf.save(`${exportFileBase()}.pdf`);
+  } catch (error) {
+    showExportError(error);
+  }
 });
 
 renderIcons();
@@ -247,7 +277,11 @@ function resetGesture() {
     return;
   }
 
-  fitScale = Math.min(1, (window.innerWidth - 16) / 760);
+  const previewStyle = window.getComputedStyle(preview);
+  const availableWidth = preview.clientWidth
+    - Number.parseFloat(previewStyle.paddingLeft)
+    - Number.parseFloat(previewStyle.paddingRight);
+  fitScale = Math.min(1, Math.max(0.1, availableWidth / 760));
   zoomScale = fitScale;
   panX = 0;
   panY = 0;
@@ -326,4 +360,5 @@ preview.addEventListener('pointermove', event => {
 });
 
 window.addEventListener('resize', resetGesture);
+window.addEventListener('beforeprint', clearPagePresentationStyles);
 resetGesture();
