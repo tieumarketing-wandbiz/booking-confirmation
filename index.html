@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -12,63 +12,38 @@
     <aside>
       <b>LA ĐỎ</b>
       <h1>Tạo phiếu đặt phòng</h1>
-
-      <label>Ngôn ngữ
-        <select id="lang">
-          <option value="vi">Tiếng Việt</option>
-          <option value="en" selected>English</option>
-        </select>
-      </label>
-
+      <label>Ngôn ngữ<select id="lang"><option value="vi">Tiếng Việt</option><option value="en" selected>English</option></select></label>
       <form id="form">
         <label>Tên khách<input name="guest" value="Mar Jo Rie"></label>
-        <div class="two">
-          <label>Ngày nhận<input name="in" type="date" value="2026-06-03"></label>
-          <label>Ngày trả<input name="out" type="date" value="2026-06-04"></label>
-        </div>
-        <div class="two">
-          <label>Giờ nhận<input name="inTime" type="time" value="14:00"></label>
-          <label>Giờ trả<input name="outTime" type="time" value="11:00"></label>
-        </div>
+        <div class="two"><label>Ngày nhận<input name="in" type="date" value="2026-06-03"></label><label>Ngày trả<input name="out" type="date" value="2026-06-04"></label></div>
+        <div class="two"><label>Giờ nhận<input name="inTime" type="time" value="14:00"></label><label>Giờ trả<input name="outTime" type="time" value="11:00"></label></div>
         <label>Tiền cọc<input name="deposit" type="number" value="975000"></label>
         <label>Dịch vụ<textarea name="services">Ăn sáng buffet
 Trà, cà phê và nước uống</textarea></label>
         <label>Chính sách huỷ<input name="policy" value="Không hoàn tiền, không hủy phòng"></label>
       </form>
-
-      <h3 class="room-title">Chi tiết phòng <button id="add" type="button">+ Thêm</button></h3>
+      <h3>Chi tiết phòng <button id="add">+ Thêm</button></h3>
       <div id="inputs"></div>
-
-      <div class="actions">
-        <button id="png" type="button">Xuất PNG</button>
-        <button id="pdf" type="button">Xuất PDF</button>
-      </div>
+      <div class="actions"><button id="png">Xuất PNG</button><button id="pdf">Xuất PDF</button></div>
     </aside>
-
     <section class="preview">
       <article id="page" aria-label="Booking confirmation preview">
-        <img class="template-bg" src="assets/booking-confirmation-english.png" alt="English booking confirmation template">
-        <div class="overlay" aria-live="polite">
-          <span id="greetingGuest" class="overlay-value greeting-guest"></span>
-
-          <span id="guest" class="overlay-value field-guest"></span>
-          <span id="nights" class="overlay-value field-nights"></span>
-          <span id="checkin" class="overlay-value field-checkin"></span>
-          <span id="checkout" class="overlay-value field-checkout"></span>
-          <span id="inTime" class="overlay-value field-in-time"></span>
-          <span id="outTime" class="overlay-value field-out-time"></span>
-
-          <div id="rows" class="room-rows"></div>
-
-          <span id="total" class="overlay-value summary-total"></span>
-          <span id="deposit" class="overlay-value summary-deposit"></span>
-          <div id="services" class="overlay-value services-value"></div>
-          <span id="policy" class="overlay-value policy-value"></span>
+        <img class="template-bg" src="assets/booking-background-english.png" alt="Lá Đỏ Homestay booking confirmation background">
+        <div class="sheet-content">
+          <h1 class="sheet-title">BOOKING CONFIRMATION</h1>
+          <section class="intro"><p class="greeting">Dear Ms/Mr, <strong id="introGuest"></strong></p><p>Thank you for choosing La Do Homestay for your upcoming stay.</p><p>We are pleased to confirm your reservation as follows:</p></section>
+          <section class="booking-section"><h2 class="section-heading"><span id="bookingIcon"></span>BOOKING INFORMATION</h2><div class="booking-grid">
+            <div class="booking-field"><span id="guestIcon"></span><span>Guest Name:</span><strong id="guest"></strong></div><div class="booking-field"><span id="moonIcon"></span><span>Number of Nights:</span><strong id="nights"></strong></div>
+            <div class="booking-field"><span id="checkinIcon"></span><span>Check-in Date:</span><strong id="checkin"></strong></div><div class="booking-field"><span id="checkoutIcon"></span><span>Check-out Date:</span><strong id="checkout"></strong></div>
+            <div class="booking-field"><span id="inTimeIcon"></span><span>Check-in Time:</span><strong id="inTime"></strong></div><div class="booking-field"><span id="outTimeIcon"></span><span>Check-out Time:</span><strong id="outTime"></strong></div>
+          </div></section>
+          <section class="details-section"><h2 class="section-heading"><span id="buildingIcon"></span>DETAILS</h2><table class="details-table"><thead><tr><th>No.</th><th>No. of<br>Rooms</th><th>Guest List</th><th>Room Type</th><th>Package</th><th>No. of<br>Guests</th><th>Room Rate<br>(VND)</th><th>Extra<br>Bed</th></tr></thead><tbody id="rows"></tbody></table></section>
+          <section class="summary-grid"><div class="summary-card"><span id="totalIcon"></span><span>Total (VND):</span><strong id="total"></strong></div><div class="summary-card"><span id="walletIcon"></span><span class="summary-copy"><span>Deposit &amp; Payment:</span><span>Customer has deposited</span></span><strong id="deposit"></strong></div></section>
+          <section class="conditions-section"><h2 class="section-heading"><span id="clipboardIcon"></span>PACKAGE &amp; BOOKING CONDITIONS</h2><div class="condition-grid"><div class="condition-row"><span id="servicesIcon"></span><span>Included Services</span><div id="services"></div></div><div class="condition-row"><span id="policyIcon"></span><span>Cancellation Policy</span><div id="policy"></div></div></div></section>
         </div>
       </article>
     </section>
   </main>
-
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <script src="app.js"></script>
