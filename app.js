@@ -361,4 +361,5 @@ preview.addEventListener('pointermove', event => {
 
 window.addEventListener('resize', resetGesture);
 window.addEventListener('beforeprint', clearPagePresentationStyles);
+window.addEventListener('afterprint', resetGesture);
 resetGesture();
