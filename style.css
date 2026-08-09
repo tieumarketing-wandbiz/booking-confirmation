@@ -52,15 +52,15 @@ button { padding: 8px; border: 0; border-radius: 5px; background: var(--green); 
 .footer-copy p:last-child { margin-bottom: 0; color: var(--green); font-size: var(--footer-signoff-size); font-style: italic; }
 .sheet-content { position: absolute; inset: 0; color: #13251a; font-family: "DM Serif Display", Georgia, serif; }
 .sheet-content > * { position: absolute; }
-.sheet-title { position: absolute; left: 14%; top: 31.6%; width: 72%; margin: 0; color: #fff; font-size: 33px; line-height: 1; letter-spacing: .04em; text-align: center; }
-.intro { position: absolute; left: 14%; top: 37.8%; width: 72%; height: 52px; overflow: hidden; color: #13251a; font-size: 12px; line-height: 1.25; text-align: center; }
+.sheet-title { position: absolute; left: 14%; top: 32.6%; width: 72%; margin: 0; color: #fff; font-size: 33px; line-height: 1; letter-spacing: .04em; text-align: center; }
+.intro { position: absolute; left: 14%; top: 39.5%; width: 72%; height: 52px; overflow: hidden; color: #13251a; font-size: 12px; line-height: 1.25; text-align: center; }
 .intro p { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .intro .greeting { margin-bottom: .55em; }
 .intro strong { font-weight: 700; overflow-wrap: anywhere; }
-.booking-section { position: absolute; left: 8%; top: 43.2%; width: 84%; }
-.details-section { position: absolute; left: 8%; top: 59.3%; width: 84%; }
-.summary-grid { position: absolute; left: 8%; top: calc(70.5% + var(--lower-shift)); width: 84%; }
-.conditions-section { position: absolute; left: 8%; top: calc(75.4% + var(--lower-shift)); width: 84%; height: 12.2%; overflow: hidden; }
+.booking-section { position: absolute; left: 8%; top: 44.5%; width: 84%; }
+.details-section { position: absolute; left: 8%; top: 60.6%; width: 84%; }
+.summary-grid { position: absolute; left: 8%; top: calc(71.8% + var(--lower-shift)); width: 84%; }
+.conditions-section { position: absolute; left: 8%; top: calc(76.9% + var(--lower-shift)); width: 84%; height: 12.2%; overflow: hidden; }
 .section-heading { display: flex; align-items: center; gap: 10px; min-height: 32px; margin: 0 0 8px; color: var(--green); font-size: 17px; line-height: 1.1; letter-spacing: .025em; }
 .section-heading > span:first-child { display: inline-grid; flex: 0 0 30px; place-items: center; width: 30px; height: 30px; color: var(--gold); line-height: 0; }
 .section-heading > span:first-child svg { display: block; width: 27px; height: 27px; }
