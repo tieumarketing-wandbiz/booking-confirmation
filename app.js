@@ -78,6 +78,23 @@ function roomRate(value) {
   return Number.isFinite(number) ? number : 0;
 }
 
+function updateSheetGeometry() {
+  const roomCount = Math.max(1, rooms.length);
+  const rowHeight = 26;
+  const pageWidth = page.clientWidth || 760;
+  const pageHeight = page.clientHeight || 1074;
+  const lowerShift = Math.max(0, roomCount - 1) * rowHeight;
+  const detailsBodyHeight = roomCount * rowHeight;
+  const conditionsBottom = (0.754 * pageHeight) + lowerShift + (0.122 * pageHeight);
+  const availableFooterHeight = Math.max(0, pageHeight - conditionsBottom - (0.015 * pageHeight));
+  const footerHeightPerWidthPercent = (pageWidth / pageHeight) * (519 / 1254);
+  const footerWidth = Math.max(18, Math.min(72, (availableFooterHeight / pageHeight * 100) / footerHeightPerWidthPercent));
+
+  page.style.setProperty('--lower-shift', `${lowerShift}px`);
+  page.style.setProperty('--details-body-height', `${detailsBodyHeight}px`);
+  page.style.setProperty('--footer-width', `${footerWidth}%`);
+}
+
 function renderIcons() {
   const icons = {
     bookingIcon: 'calendar',
@@ -166,6 +183,7 @@ function updatePreview() {
     .map(line => `<span>• ${escapeHtml(line)}</span>`)
     .join('');
   document.querySelector('#policy').innerHTML = escapeHtml(values.policy);
+  updateSheetGeometry();
 }
 
 async function capturePage() {
