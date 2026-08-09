@@ -10,7 +10,7 @@
 body { margin: 0; background: #e8ede7; color: var(--ink); font-family: Manrope, Arial, sans-serif; }
 .app { display: grid; grid-template-columns: 330px minmax(0, 1fr); min-height: 100vh; }
 aside { align-self: start; max-height: 100vh; overflow: auto; padding: 25px; background: #fff; }
-aside > b { color: var(--green); letter-spacing: 2px; }
+.sidebar-logo { display: block; width: 96px; height: auto; margin-bottom: 12px; }
 aside h1 { font-size: 21px; }
 aside h3, .room-title { display: flex; align-items: center; justify-content: space-between; }
 label { display: block; margin: 9px 0; font-size: 11px; font-weight: 700; }
