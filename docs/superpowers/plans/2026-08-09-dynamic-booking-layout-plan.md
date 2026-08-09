@@ -80,10 +80,12 @@ git commit -m "feat: add updated booking background and footer art"
 
 **Files:**
 - Modify: `style.css` geometry rules for `.details-section`, `.summary-grid`, `.conditions-section`, and `.footer-artwork`
+- Create: `layout.js` with the pure geometry calculation
 - Modify: `app.js` after `updatePreview()` and in the room add/remove flow
+- Test: `tests/booking-layout.test.js`
 
 **Interfaces:**
-- `updateSheetGeometry()` reads `rooms.length` and writes `--lower-shift`, `--details-body-height`, `--footer-width`, and `--footer-bottom` on `#page`.
+- `updateSheetGeometry()` measures rendered `<tr>` heights and passes their total to `BookingLayout.getSheetGeometry()`, which writes `--lower-shift`, `--details-body-height`, `--footer-width`, and `--footer-bottom` on `#page`.
 
 - [ ] **Step 1: Add CSS custom-property geometry defaults**
 
@@ -103,30 +105,24 @@ Keep the details anchor fixed, then shift the sections below its table body:
 
 - [ ] **Step 2: Add the geometry updater**
 
-Implement this behavior in `app.js`:
+Implement the pure calculation in `layout.js` and test it with `tests/booking-layout.test.js`:
 
 ```js
-function updateSheetGeometry() {
-  const roomCount = Math.max(1, rooms.length);
-  const rowHeight = 26;
-  const pageHeight = page.clientHeight || 1074;
-  const lowerShift = Math.max(0, roomCount - 1) * rowHeight;
-  const detailsBodyHeight = roomCount * rowHeight;
+function getSheetGeometry({ bodyHeight = 26, pageWidth = 760, pageHeight = 1074 } = {}) {
+  const detailsBodyHeight = Math.max(26, Number(bodyHeight) || 26);
+  const lowerShift = detailsBodyHeight - 26;
   const conditionsBottom = (0.754 * pageHeight) + lowerShift + (0.122 * pageHeight);
   const availableFooterHeight = Math.max(0, pageHeight - conditionsBottom);
-  const footerHeightPerWidthPercent = (page.clientWidth / pageHeight) * (519 / 1254);
+  const footerHeightPerWidthPercent = (pageWidth / pageHeight) * (519 / 1254);
   const footerWidth = Math.max(0, Math.min(72, (availableFooterHeight / pageHeight * 100) / footerHeightPerWidthPercent * 0.9));
-  const footerHeight = page.clientWidth * (footerWidth / 100) * (519 / 1254);
+  const footerHeight = pageWidth * (footerWidth / 100) * (519 / 1254);
   const footerBottom = Math.max(0, (pageHeight - conditionsBottom - footerHeight) / 2);
 
-  page.style.setProperty('--lower-shift', `${lowerShift}px`);
-  page.style.setProperty('--details-body-height', `${detailsBodyHeight}px`);
-  page.style.setProperty('--footer-width', `${footerWidth}%`);
-  page.style.setProperty('--footer-bottom', `${footerBottom}px`);
+  return { lowerShift, detailsBodyHeight, footerWidth, footerBottom };
 }
 ```
 
-Call it at the end of `updatePreview()` after room rows and condition text are rendered. Since add/remove already calls `updatePreview()`, all room changes update the stack automatically.
+In `app.js`, temporarily set `#rows.maxHeight` to `none`, sum `Math.ceil(row.getBoundingClientRect().height)` for every rendered row, pass that `bodyHeight` to `BookingLayout.getSheetGeometry()`, then write the returned values to the four CSS custom properties. Call it at the end of `updatePreview()` after room rows and condition text are rendered. Since add/remove already calls `updatePreview()`, all room changes update the stack automatically.
 
 - [ ] **Step 3: Make the details table height follow its section**
 
@@ -136,7 +132,7 @@ Use the dynamic body height while preserving the existing clipping safety:
 .details-table tbody { max-height: var(--details-body-height, 26px); }
 ```
 
-Keep room rows at their existing compact 26px height so additional rows consume predictable space. Anchor the footer to the bottom:
+Keep 26px as the minimum room-row height so additional lines can expand the row. Anchor the footer to the calculated bottom gap:
 
 ```css
 .footer-artwork { top: auto; bottom: var(--footer-bottom, 1.5%); width: var(--footer-width, 38%); }
@@ -144,7 +140,7 @@ Keep room rows at their existing compact 26px height so additional rows consume 
 
 - [ ] **Step 4: Verify geometry states with a deterministic DOM-style calculation**
 
-Run a small Node assertion against the geometry formulas for room counts 1, 2, 4, and 6. Assert that `lowerShift` and `detailsBodyHeight` increase by 26px per extra room, the calculated footer width stays between 0% and 72%, and the footer's top/bottom gaps remain equal whenever positive space remains.
+Run `node tests/booking-layout.test.js`. Assert that a 26px body produces no shift, a 78px body produces a 52px shift, footer width decreases as body height grows, and positive footer space has equal top/bottom gaps.
 
 - [ ] **Step 5: Commit**
 
@@ -158,10 +154,12 @@ git commit -m "feat: reflow booking sheet for multiple rooms"
 **Files:**
 - Modify: `style.css` only if print rules need to clear geometry variables.
 - Modify: `app.js` only if export capture needs to include the new footer layer.
+- Test: `tests/booking-layout.test.js`
 
 - [ ] **Step 1: Run static checks**
 
 ```bash
+node tests/booking-layout.test.js
 node --check app.js
 git diff --check
 ```

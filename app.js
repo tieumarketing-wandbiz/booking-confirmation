@@ -79,23 +79,20 @@ function roomRate(value) {
 }
 
 function updateSheetGeometry() {
-  const roomCount = Math.max(1, rooms.length);
-  const rowHeight = 26;
-  const pageWidth = page.clientWidth || 760;
-  const pageHeight = page.clientHeight || 1074;
-  const lowerShift = Math.max(0, roomCount - 1) * rowHeight;
-  const detailsBodyHeight = roomCount * rowHeight;
-  const conditionsBottom = (0.754 * pageHeight) + lowerShift + (0.122 * pageHeight);
-  const availableFooterHeight = Math.max(0, pageHeight - conditionsBottom);
-  const footerHeightPerWidthPercent = (pageWidth / pageHeight) * (519 / 1254);
-  const footerWidth = Math.max(0, Math.min(72, (availableFooterHeight / pageHeight * 100) / footerHeightPerWidthPercent * 0.9));
-  const footerHeight = pageWidth * (footerWidth / 100) * (519 / 1254);
-  const footerBottom = Math.max(0, (pageHeight - conditionsBottom - footerHeight) / 2);
+  roomRows.style.maxHeight = 'none';
+  const measuredBodyHeight = [...roomRows.querySelectorAll('tr')]
+    .reduce((height, row) => height + Math.ceil(row.getBoundingClientRect().height), 0);
+  const geometry = window.BookingLayout.getSheetGeometry({
+    bodyHeight: measuredBodyHeight,
+    pageWidth: page.clientWidth || 760,
+    pageHeight: page.clientHeight || 1074
+  });
 
-  page.style.setProperty('--lower-shift', `${lowerShift}px`);
-  page.style.setProperty('--details-body-height', `${detailsBodyHeight}px`);
-  page.style.setProperty('--footer-width', `${footerWidth}%`);
-  page.style.setProperty('--footer-bottom', `${footerBottom}px`);
+  page.style.setProperty('--lower-shift', `${geometry.lowerShift}px`);
+  page.style.setProperty('--details-body-height', `${geometry.detailsBodyHeight}px`);
+  page.style.setProperty('--footer-width', `${geometry.footerWidth}%`);
+  page.style.setProperty('--footer-bottom', `${geometry.footerBottom}px`);
+  roomRows.style.maxHeight = '';
 }
 
 function renderIcons() {

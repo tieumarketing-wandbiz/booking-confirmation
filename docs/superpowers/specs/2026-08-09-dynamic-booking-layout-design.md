@@ -26,14 +26,15 @@ The existing export and mobile gesture behavior must continue to work. The PNG f
 - `assets/booking-background-english.png`: replaced with the new 1055×1491 background.
 - `assets/booking-footer-english.png`: new transparent footer artwork asset.
 - `index.html`: adds a dedicated footer artwork image layer inside `.sheet-content`.
-- `style.css`: defines dynamic lower-section variables, footer image geometry, and transition-safe dimensions.
-- `app.js`: measures room count/table height, updates CSS custom properties, and applies compact footer sizing when space is constrained.
+- `layout.js`: provides the pure geometry calculation used by the browser and Node test.
+- `style.css`: defines dynamic lower-section variables, auto-height table rows, footer image geometry, and transition-safe dimensions.
+- `app.js`: measures rendered row heights, updates CSS custom properties, and applies compact footer sizing when space is constrained.
 
 ## Acceptance criteria
 
 1. The new background and footer artwork render in the preview and export paths.
 2. With one room, the details, summary, conditions, and footer are visually balanced and centered.
-3. Adding rooms pushes the details table, summary, and conditions downward in order.
+3. Adding rooms or filling a row with wrapped content increases the details table height, then pushes the summary and conditions downward in order.
 4. With multiple rooms, the footer artwork scales down before it overlaps any table or condition content.
 5. Removing rooms restores the preferred footer scale and spacing.
 6. `node --check app.js` and `git diff --check` pass.
