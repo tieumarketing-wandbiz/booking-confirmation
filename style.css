@@ -40,9 +40,18 @@ button { padding: 8px; border: 0; border-radius: 5px; background: var(--green); 
   --details-body-height: 26px;
   --footer-width: 38%;
   --footer-bottom: 1.5%;
+  --footer-title-size: 16px;
+  --footer-copy-size: 9px;
+  --footer-signoff-size: 19px;
 }
 .template-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; pointer-events: none; }
 .footer-artwork { position: absolute; top: auto; bottom: var(--footer-bottom); left: 50%; z-index: 3; width: var(--footer-width); max-width: none; transform: translateX(-50%); pointer-events: none; }
+.footer-copy { display: none; position: absolute; bottom: var(--footer-bottom); left: 50%; z-index: 3; width: var(--footer-width); transform: translateX(-50%); color: var(--green); text-align: center; }
+.footer-copy h2 { margin: 0 0 3px; color: #8f2019; font-size: var(--footer-title-size); line-height: 1.05; }
+.footer-copy p { margin: 0 auto 3px; font-size: var(--footer-copy-size); line-height: 1.2; }
+.footer-copy p:last-child { margin-bottom: 0; color: var(--green); font-size: var(--footer-signoff-size); font-style: italic; }
+#page.lang-vi .footer-artwork { display: none; }
+#page.lang-vi .footer-copy { display: block; }
 .sheet-content { position: absolute; inset: 0; color: #13251a; font-family: "DM Serif Display", Georgia, serif; }
 .sheet-content > * { position: absolute; }
 .sheet-title { position: absolute; left: 14%; top: 31.6%; width: 72%; margin: 0; color: #fff; font-size: 33px; line-height: 1; letter-spacing: .04em; text-align: center; }
@@ -55,8 +64,8 @@ button { padding: 8px; border: 0; border-radius: 5px; background: var(--green); 
 .summary-grid { position: absolute; left: 8%; top: calc(70.5% + var(--lower-shift)); width: 84%; }
 .conditions-section { position: absolute; left: 8%; top: calc(75.4% + var(--lower-shift)); width: 84%; height: 12.2%; overflow: hidden; }
 .section-heading { display: flex; align-items: center; gap: 10px; min-height: 32px; margin: 0 0 8px; color: var(--green); font-size: 17px; line-height: 1.1; letter-spacing: .025em; }
-.section-heading > span { display: inline-grid; flex: 0 0 30px; place-items: center; width: 30px; height: 30px; color: var(--gold); line-height: 0; }
-.section-heading > span svg { display: block; width: 27px; height: 27px; }
+.section-heading > span:first-child { display: inline-grid; flex: 0 0 30px; place-items: center; width: 30px; height: 30px; color: var(--gold); line-height: 0; }
+.section-heading > span:first-child svg { display: block; width: 27px; height: 27px; }
 .booking-grid { gap: 10px; }
 .booking-field { display: flex; align-items: center; min-width: 0; height: 37px; overflow: hidden; padding: 6px 10px; border: 1.5px solid var(--gold); border-radius: 11px; font-size: 11px; line-height: 1.15; }
 .booking-field > span:first-of-type { display: inline-grid; flex: 0 0 25px; place-items: center; width: 25px; height: 25px; margin-right: 8px; color: var(--gold); line-height: 0; }

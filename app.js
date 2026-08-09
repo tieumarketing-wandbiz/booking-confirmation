@@ -3,6 +3,7 @@ const roomInputs = document.querySelector('#inputs');
 const roomRows = document.querySelector('#rows');
 const page = document.querySelector('#page');
 const preview = document.querySelector('.preview');
+const languageSelect = document.querySelector('#lang');
 
 let rooms = [{
   list: 'Mar Jo Rie\nAshley Olalia',
@@ -50,7 +51,7 @@ function formatDate(value) {
   const date = new Date(`${value}T00:00:00`);
   if (Number.isNaN(date.getTime())) return '';
 
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat(languageSelect.value === 'vi' ? 'vi-VN' : 'en-US', {
     month: 'long',
     day: 'numeric',
     year: 'numeric'
@@ -78,6 +79,16 @@ function roomRate(value) {
   return Number.isFinite(number) ? number : 0;
 }
 
+function applyLanguage() {
+  const locale = window.BookingLocales.getLocale(languageSelect.value);
+
+  document.documentElement.lang = locale.documentLanguage;
+  page.classList.toggle('lang-vi', languageSelect.value === 'vi');
+  document.querySelectorAll('[data-i18n]').forEach(element => {
+    element.innerHTML = locale[element.dataset.i18n] || '';
+  });
+}
+
 function updateSheetGeometry() {
   roomRows.style.maxHeight = 'none';
   const measuredBodyHeight = [...roomRows.querySelectorAll('tr')]
@@ -92,6 +103,9 @@ function updateSheetGeometry() {
   page.style.setProperty('--details-body-height', `${geometry.detailsBodyHeight}px`);
   page.style.setProperty('--footer-width', `${geometry.footerWidth}%`);
   page.style.setProperty('--footer-bottom', `${geometry.footerBottom}px`);
+  page.style.setProperty('--footer-title-size', `${Math.max(8, Math.min(16, geometry.footerWidth * 0.42))}px`);
+  page.style.setProperty('--footer-copy-size', `${Math.max(5.5, Math.min(9, geometry.footerWidth * 0.23))}px`);
+  page.style.setProperty('--footer-signoff-size', `${Math.max(9, Math.min(19, geometry.footerWidth * 0.5))}px`);
   roomRows.style.maxHeight = '';
 }
 
@@ -151,6 +165,8 @@ function renderRoomEditors() {
 
 function updatePreview() {
   const values = valuesFromForm();
+  applyLanguage();
+  const locale = window.BookingLocales.getLocale(languageSelect.value);
   const nights = getNightCount(values.in, values.out);
 
   setText('introGuest', values.guest);
@@ -162,7 +178,7 @@ function updatePreview() {
   setText('outTime', values.outTime);
 
   roomRows.innerHTML = rooms.map((room, index) => {
-    const adults = `${room.count || 0} adults`;
+    const adults = `${room.count || 0} ${locale.adults}`;
     return `<tr>
       <td><span class="text-clamp">${String(index + 1).padStart(2, '0')}</span></td>
       <td><span class="text-clamp">1</span></td>
@@ -246,6 +262,7 @@ document.querySelector('#add').addEventListener('click', () => {
 
 form.addEventListener('input', updatePreview);
 form.addEventListener('change', updatePreview);
+languageSelect.addEventListener('change', updatePreview);
 
 document.querySelector('#png').addEventListener('click', async () => {
   try {

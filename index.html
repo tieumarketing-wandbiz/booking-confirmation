@@ -31,17 +31,18 @@ Tea, coffee, and drinking water</textarea></label>
       <article id="page" aria-label="Booking confirmation preview">
         <img class="template-bg" src="assets/booking-background-english.png" alt="Lá Đỏ Homestay booking confirmation background">
         <div class="sheet-content">
-          <h1 class="sheet-title">BOOKING CONFIRMATION</h1>
-          <section class="intro"><p class="greeting">Dear Ms/Mr, <strong id="introGuest"></strong></p><p>Thank you for choosing La Do Homestay for your upcoming stay.</p><p>We are pleased to confirm your reservation as follows:</p></section>
-          <section class="booking-section"><h2 class="section-heading"><span id="bookingIcon"></span>BOOKING INFORMATION</h2><div class="booking-grid">
-            <div class="booking-field"><span id="guestIcon"></span><span>Guest Name:</span><strong id="guest"></strong></div><div class="booking-field"><span id="moonIcon"></span><span>Number of Nights:</span><strong id="nights"></strong></div>
-            <div class="booking-field"><span id="checkinIcon"></span><span>Check-in Date:</span><strong id="checkin"></strong></div><div class="booking-field"><span id="checkoutIcon"></span><span>Check-out Date:</span><strong id="checkout"></strong></div>
-            <div class="booking-field"><span id="inTimeIcon"></span><span>Check-in Time:</span><strong id="inTime"></strong></div><div class="booking-field"><span id="outTimeIcon"></span><span>Check-out Time:</span><strong id="outTime"></strong></div>
+          <h1 class="sheet-title" id="sheetTitle" data-i18n="title">BOOKING CONFIRMATION</h1>
+          <section class="intro"><p class="greeting"><span id="greeting" data-i18n="greeting">Dear Ms/Mr,</span> <strong id="introGuest"></strong></p><p id="introThanks" data-i18n="introThanks">Thank you for choosing La Do Homestay for your upcoming stay.</p><p id="introConfirm" data-i18n="introConfirm">We are pleased to confirm your reservation as follows:</p></section>
+          <section class="booking-section"><h2 class="section-heading"><span id="bookingIcon"></span><span class="heading-label" id="bookingHeading" data-i18n="bookingHeading">BOOKING INFORMATION</span></h2><div class="booking-grid">
+            <div class="booking-field"><span id="guestIcon"></span><span data-i18n="guestName">Guest Name:</span><strong id="guest"></strong></div><div class="booking-field"><span id="moonIcon"></span><span data-i18n="nights">Number of Nights:</span><strong id="nights"></strong></div>
+            <div class="booking-field"><span id="checkinIcon"></span><span data-i18n="checkinDate">Check-in Date:</span><strong id="checkin"></strong></div><div class="booking-field"><span id="checkoutIcon"></span><span data-i18n="checkoutDate">Check-out Date:</span><strong id="checkout"></strong></div>
+            <div class="booking-field"><span id="inTimeIcon"></span><span data-i18n="checkinTime">Check-in Time:</span><strong id="inTime"></strong></div><div class="booking-field"><span id="outTimeIcon"></span><span data-i18n="checkoutTime">Check-out Time:</span><strong id="outTime"></strong></div>
           </div></section>
-          <section class="details-section"><h2 class="section-heading"><span id="buildingIcon"></span>DETAILS</h2><table class="details-table"><thead><tr><th>No.</th><th>No. of<br>Rooms</th><th>Guest List</th><th>Room Type</th><th>Package</th><th>No. of<br>Guests</th><th>Room Rate<br>(VND)</th><th>Extra<br>Bed</th></tr></thead><tbody id="rows"></tbody></table></section>
-          <section class="summary-grid"><div class="summary-card"><span id="totalIcon"></span><span>Total (VND):</span><strong id="total"></strong></div><div class="summary-card"><span id="walletIcon"></span><span class="summary-copy"><span>Deposit &amp; Payment:</span><span>Customer has deposited</span></span><strong id="deposit"></strong></div></section>
-          <section class="conditions-section"><h2 class="section-heading"><span id="clipboardIcon"></span>PACKAGE &amp; BOOKING CONDITIONS</h2><div class="condition-grid"><div class="condition-row"><span id="servicesIcon"></span><span>Included Services</span><div id="services"></div></div><div class="condition-row"><span id="policyIcon"></span><span>Cancellation Policy</span><div id="policy"></div></div></div></section>
+          <section class="details-section"><h2 class="section-heading"><span id="buildingIcon"></span><span class="heading-label" id="detailsHeading" data-i18n="detailsHeading">DETAILS</span></h2><table class="details-table"><thead><tr><th data-i18n="tableNo">No.</th><th data-i18n="tableRooms">No. of<br>Rooms</th><th data-i18n="tableGuests">Guest List</th><th data-i18n="tableRoomType">Room Type</th><th data-i18n="tablePackage">Package</th><th data-i18n="tableGuestCount">No. of<br>Guests</th><th data-i18n="tableRate">Room Rate<br>(VND)</th><th data-i18n="tableExtraBed">Extra<br>Bed</th></tr></thead><tbody id="rows"></tbody></table></section>
+          <section class="summary-grid"><div class="summary-card"><span id="totalIcon"></span><span id="totalLabel" data-i18n="total">Total (VND):</span><strong id="total"></strong></div><div class="summary-card"><span id="walletIcon"></span><span class="summary-copy"><span id="depositLabel" data-i18n="deposit">Deposit &amp; Payment:</span><span id="depositedLabel" data-i18n="deposited">Customer has deposited</span></span><strong id="deposit"></strong></div></section>
+          <section class="conditions-section"><h2 class="section-heading"><span id="clipboardIcon"></span><span class="heading-label" id="conditionsHeading" data-i18n="conditionsHeading">PACKAGE &amp; BOOKING CONDITIONS</span></h2><div class="condition-grid"><div class="condition-row"><span id="servicesIcon"></span><span id="servicesLabel" data-i18n="services">Included Services</span><div id="services"></div></div><div class="condition-row"><span id="policyIcon"></span><span id="policyLabel" data-i18n="policy">Cancellation Policy</span><div id="policy"></div></div></div></section>
           <img class="footer-artwork" src="assets/booking-footer-english.png" alt="Thank you and best regards">
+          <div class="footer-copy"><h2 id="footerTitle" data-i18n="footerTitle">Thank you &amp; Best regards!</h2><p id="footerBody" data-i18n="footerBody">We look forward to welcoming you and hope you have a wonderful stay with us in Sapa.</p><p id="footerSignoff" data-i18n="footerSignoff">See you in Sapa! ♡</p></div>
         </div>
       </article>
     </section>
@@ -49,6 +50,7 @@ Tea, coffee, and drinking water</textarea></label>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <script src="layout.js"></script>
+  <script src="language.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
