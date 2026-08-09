@@ -136,12 +136,12 @@ function renderRoomEditors() {
     <div class="room">
       <button class="delete-room" type="button" data-remove-room="${index}" aria-label="Remove room ${index + 1}">× Remove</button>
       <b>Room ${index + 1}</b>
-      <textarea data-room-index="${index}" data-room-key="list" aria-label="Guest list">${escapeHtml(room.list)}</textarea>
-      <input data-room-index="${index}" data-room-key="type" value="${escapeHtml(room.type)}" aria-label="Room type">
+      <textarea data-room-index="${index}" data-room-key="list" placeholder="Guest list" aria-label="Guest list">${escapeHtml(room.list)}</textarea>
+      <input data-room-index="${index}" data-room-key="type" value="${escapeHtml(room.type)}" placeholder="Room type" aria-label="Room type">
       <div class="two"><input data-room-index="${index}" data-room-key="pack" value="${escapeHtml(room.pack || '')}" placeholder="Package" aria-label="Package"><input data-room-index="${index}" data-room-key="bed" value="${escapeHtml(room.bed || '')}" placeholder="Extra bed" aria-label="Extra bed"></div>
       <div class="two">
-        <input data-room-index="${index}" data-room-key="count" type="number" min="1" value="${escapeHtml(room.count)}" aria-label="Number of adults">
-        <input data-room-index="${index}" data-room-key="rate" type="number" min="0" value="${escapeHtml(room.rate)}" aria-label="Room rate">
+        <input data-room-index="${index}" data-room-key="count" type="number" min="1" value="${escapeHtml(room.count)}" placeholder="No. of guests" aria-label="Number of adults">
+        <input data-room-index="${index}" data-room-key="rate" type="number" min="0" value="${escapeHtml(room.rate)}" placeholder="Room rate" aria-label="Room rate">
       </div>
     </div>
   `).join('');
