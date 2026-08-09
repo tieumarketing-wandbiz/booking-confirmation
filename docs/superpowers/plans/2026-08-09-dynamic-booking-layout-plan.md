@@ -50,7 +50,7 @@ Add immediately after `.template-bg`:
   position: absolute;
   left: 50%;
   top: auto;
-  bottom: 1.5%;
+  bottom: var(--footer-bottom, 1.5%);
   width: var(--footer-width, 38%);
   max-width: none;
   transform: translateX(-50%);
@@ -83,7 +83,7 @@ git commit -m "feat: add updated booking background and footer art"
 - Modify: `app.js` after `updatePreview()` and in the room add/remove flow
 
 **Interfaces:**
-- `updateSheetGeometry()` reads `rooms.length` and writes `--lower-shift`, `--details-body-height`, and `--footer-width` on `#page`.
+- `updateSheetGeometry()` reads `rooms.length` and writes `--lower-shift`, `--details-body-height`, `--footer-width`, and `--footer-bottom` on `#page`.
 
 - [ ] **Step 1: Add CSS custom-property geometry defaults**
 
@@ -94,6 +94,7 @@ Keep the details anchor fixed, then shift the sections below its table body:
   --lower-shift: 0px;
   --details-body-height: 26px;
   --footer-width: 38%;
+  --footer-bottom: 1.5%;
 }
 .details-section { top: 59.3%; }
 .summary-grid { top: calc(70.5% + var(--lower-shift)); }
@@ -112,13 +113,16 @@ function updateSheetGeometry() {
   const lowerShift = Math.max(0, roomCount - 1) * rowHeight;
   const detailsBodyHeight = roomCount * rowHeight;
   const conditionsBottom = (0.754 * pageHeight) + lowerShift + (0.122 * pageHeight);
-  const availableFooterHeight = Math.max(0, pageHeight - conditionsBottom - (0.015 * pageHeight));
+  const availableFooterHeight = Math.max(0, pageHeight - conditionsBottom);
   const footerHeightPerWidthPercent = (page.clientWidth / pageHeight) * (519 / 1254);
-  const footerWidth = Math.max(18, Math.min(72, (availableFooterHeight / pageHeight * 100) / footerHeightPerWidthPercent));
+  const footerWidth = Math.max(0, Math.min(72, (availableFooterHeight / pageHeight * 100) / footerHeightPerWidthPercent * 0.9));
+  const footerHeight = page.clientWidth * (footerWidth / 100) * (519 / 1254);
+  const footerBottom = Math.max(0, (pageHeight - conditionsBottom - footerHeight) / 2);
 
   page.style.setProperty('--lower-shift', `${lowerShift}px`);
   page.style.setProperty('--details-body-height', `${detailsBodyHeight}px`);
   page.style.setProperty('--footer-width', `${footerWidth}%`);
+  page.style.setProperty('--footer-bottom', `${footerBottom}px`);
 }
 ```
 
@@ -135,12 +139,12 @@ Use the dynamic body height while preserving the existing clipping safety:
 Keep room rows at their existing compact 26px height so additional rows consume predictable space. Anchor the footer to the bottom:
 
 ```css
-.footer-artwork { top: auto; bottom: 1.5%; width: var(--footer-width, 38%); }
+.footer-artwork { top: auto; bottom: var(--footer-bottom, 1.5%); width: var(--footer-width, 38%); }
 ```
 
 - [ ] **Step 4: Verify geometry states with a deterministic DOM-style calculation**
 
-Run a small Node assertion against the geometry formulas for room counts 1, 2, 4, and 6. Assert that `lowerShift` and `detailsBodyHeight` increase by 26px per extra room and that the calculated footer width never exceeds 72% or falls below 18%.
+Run a small Node assertion against the geometry formulas for room counts 1, 2, 4, and 6. Assert that `lowerShift` and `detailsBodyHeight` increase by 26px per extra room, the calculated footer width stays between 0% and 72%, and the footer's top/bottom gaps remain equal whenever positive space remains.
 
 - [ ] **Step 5: Commit**
 

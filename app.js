@@ -86,13 +86,16 @@ function updateSheetGeometry() {
   const lowerShift = Math.max(0, roomCount - 1) * rowHeight;
   const detailsBodyHeight = roomCount * rowHeight;
   const conditionsBottom = (0.754 * pageHeight) + lowerShift + (0.122 * pageHeight);
-  const availableFooterHeight = Math.max(0, pageHeight - conditionsBottom - (0.015 * pageHeight));
+  const availableFooterHeight = Math.max(0, pageHeight - conditionsBottom);
   const footerHeightPerWidthPercent = (pageWidth / pageHeight) * (519 / 1254);
-  const footerWidth = Math.max(18, Math.min(72, (availableFooterHeight / pageHeight * 100) / footerHeightPerWidthPercent));
+  const footerWidth = Math.max(0, Math.min(72, (availableFooterHeight / pageHeight * 100) / footerHeightPerWidthPercent * 0.9));
+  const footerHeight = pageWidth * (footerWidth / 100) * (519 / 1254);
+  const footerBottom = Math.max(0, (pageHeight - conditionsBottom - footerHeight) / 2);
 
   page.style.setProperty('--lower-shift', `${lowerShift}px`);
   page.style.setProperty('--details-body-height', `${detailsBodyHeight}px`);
   page.style.setProperty('--footer-width', `${footerWidth}%`);
+  page.style.setProperty('--footer-bottom', `${footerBottom}px`);
 }
 
 function renderIcons() {

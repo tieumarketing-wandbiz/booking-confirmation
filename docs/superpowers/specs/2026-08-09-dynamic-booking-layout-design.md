@@ -17,7 +17,7 @@ The content stack remains ordered as:
 
 `title → intro → booking → details → summary → conditions → footer artwork`
 
-The booking and title areas stay anchored to the new background. The details table height is derived from the number of rooms, capped by the printable sheet area. Summary and conditions move below the table with a consistent gap. The footer artwork is positioned after conditions and centered horizontally. When the calculated footer area becomes shorter than the artwork's preferred height, its width scales down proportionally; it must retain a minimum readable scale and must never overlap the conditions section.
+The booking and title areas stay anchored to the new background. The details table height is derived from the number of rooms, capped by the printable sheet area. Summary and conditions move below the table with a consistent gap. The footer artwork is positioned after conditions and centered horizontally. When the calculated footer area becomes shorter than the artwork's preferred height, its width scales down proportionally; if no positive space remains, it may collapse rather than overlap the conditions section.
 
 The existing export and mobile gesture behavior must continue to work. The PNG footer remains an image layer so its transparent background preserves the paper texture underneath.
 
