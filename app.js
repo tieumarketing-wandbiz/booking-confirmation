@@ -8,10 +8,10 @@ const languageSelect = document.querySelector('#lang');
 let rooms = [{
   list: 'Mar Jo Rie\nAshley Olalia',
   type: 'Deluxe balcony mountain view',
-  pack: '—',
+  pack: '',
   count: 2,
   rate: 2000000,
-  bed: '—'
+  bed: ''
 }];
 
 const iconPaths = {
@@ -138,6 +138,7 @@ function renderRoomEditors() {
       <b>Room ${index + 1}</b>
       <textarea data-room-index="${index}" data-room-key="list" aria-label="Guest list">${escapeHtml(room.list)}</textarea>
       <input data-room-index="${index}" data-room-key="type" value="${escapeHtml(room.type)}" aria-label="Room type">
+      <div class="two"><input data-room-index="${index}" data-room-key="pack" value="${escapeHtml(room.pack || '')}" placeholder="Package" aria-label="Package"><input data-room-index="${index}" data-room-key="bed" value="${escapeHtml(room.bed || '')}" placeholder="Extra bed" aria-label="Extra bed"></div>
       <div class="two">
         <input data-room-index="${index}" data-room-key="count" type="number" min="1" value="${escapeHtml(room.count)}" aria-label="Number of adults">
         <input data-room-index="${index}" data-room-key="rate" type="number" min="0" value="${escapeHtml(room.rate)}" aria-label="Room rate">
@@ -191,7 +192,7 @@ function updatePreview() {
     </tr>`;
   }).join('');
 
-  setText('total', formatNumber(rooms.reduce((sum, room) => sum + roomRate(room.rate), 0)));
+  setText('total', formatNumber(values.total));
   setText('deposit', formatNumber(values.deposit));
   document.querySelector('#services').innerHTML = (values.services || '')
     .split(/\r?\n/)
@@ -255,7 +256,7 @@ function downloadCanvas(canvas, extension) {
 }
 
 document.querySelector('#add').addEventListener('click', () => {
-  rooms.push({ list: '', type: '', pack: '—', count: 1, rate: 0, bed: '—' });
+  rooms.push({ list: '', type: '', pack: '', count: 1, rate: 0, bed: '' });
   renderRoomEditors();
   updatePreview();
 });
