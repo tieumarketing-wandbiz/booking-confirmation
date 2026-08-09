@@ -83,11 +83,11 @@ button { padding: 8px; border: 0; border-radius: 5px; background: var(--green); 
 .summary-copy { display: flex; min-width: 0; flex-direction: column; gap: 2px; }
 .summary-copy span:last-child { color: #59665d; font-size: .85em; }
 .condition-grid { display: grid; grid-template-rows: 43px 37px; gap: 6px; }
-.condition-row { display: grid; grid-template-columns: 27px minmax(0, 45.5%) minmax(0, 1fr); column-gap: 8px; align-items: center; min-width: 0; height: 100%; overflow: hidden; padding: 6px 11px; border: 1.5px solid var(--gold); border-radius: 11px; font-size: 11px; line-height: 1.35; }
+.condition-row { display: grid; grid-template-columns: 27px minmax(0, 45.5%) minmax(0, 1fr); column-gap: 8px; align-items: center; min-width: 0; height: 100%; overflow: hidden; padding: 4px 11px; border: 1.5px solid var(--gold); border-radius: 11px; font-size: 11px; line-height: 1.35; }
 .condition-row > span:first-child { display: inline-grid; place-items: center; width: 27px; height: 27px; color: var(--gold); line-height: 0; }
 .condition-row > span:first-child svg { display: block; width: 25px; height: 25px; }
-.condition-row > span:nth-child(2) { color: var(--green); text-align: left; }
-.condition-row > div { min-width: 0; height: 2.7em; overflow: hidden; overflow-wrap: anywhere; text-align: left; white-space: pre-line; }
+.condition-row > span:nth-child(2) { display: flex; align-items: center; height: 100%; color: var(--green); text-align: left; }
+.condition-row > div { display: flex; min-width: 0; height: 100%; flex-direction: column; align-items: flex-start; justify-content: center; overflow: hidden; overflow-wrap: anywhere; text-align: left; white-space: pre-line; }
 .condition-row > div span { display: block; }
 .export-status { min-height: 1.3em; margin: 8px 0 0; color: #994236; font-size: 11px; font-weight: 700; }
 
