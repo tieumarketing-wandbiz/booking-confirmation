@@ -51,6 +51,7 @@ button { padding: 8px; border: 0; border-radius: 5px; background: var(--green); 
 .footer-copy p { margin: 0 auto 3px; font-size: var(--footer-copy-size); line-height: 1.2; }
 .footer-copy p:last-child { margin-bottom: 0; color: var(--green); font-size: var(--footer-signoff-size); font-style: italic; }
 .sheet-content { position: absolute; inset: 0; color: #13251a; font-family: "DM Serif Display", Georgia, serif; }
+#page.lang-vi .sheet-content { font-family: "Be Vietnam Pro", Arial, sans-serif; }
 .sheet-content > * { position: absolute; }
 .sheet-title { position: absolute; left: 14%; top: 32.6%; width: 72%; margin: 0; color: #fff; font-size: 33px; line-height: 1; letter-spacing: .04em; text-align: center; }
 .intro { position: absolute; left: 14%; top: 39.5%; width: 72%; height: 52px; overflow: hidden; color: #13251a; font-size: 12px; line-height: 1.25; text-align: center; }
