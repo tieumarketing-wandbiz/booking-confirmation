@@ -9,7 +9,7 @@ let rooms = [{
   list: 'Mar Jo Rie\nAshley Olalia',
   type: 'Deluxe balcony mountain view',
   pack: '',
-  count: 2,
+  count: '2 adults',
   rate: 2000000,
   bed: ''
 }];
@@ -140,7 +140,7 @@ function renderRoomEditors() {
       <input data-room-index="${index}" data-room-key="type" value="${escapeHtml(room.type)}" placeholder="Room type" aria-label="Room type">
       <div class="two"><input data-room-index="${index}" data-room-key="pack" value="${escapeHtml(room.pack || '')}" placeholder="Package" aria-label="Package"><input data-room-index="${index}" data-room-key="bed" value="${escapeHtml(room.bed || '')}" placeholder="Extra bed" aria-label="Extra bed"></div>
       <div class="two">
-        <input data-room-index="${index}" data-room-key="count" type="number" min="1" value="${escapeHtml(room.count)}" placeholder="No. of guests" aria-label="Number of adults">
+        <textarea data-room-index="${index}" data-room-key="count" placeholder="No. of guests" aria-label="No. of guests">${escapeHtml(room.count)}</textarea>
         <input data-room-index="${index}" data-room-key="rate" type="number" min="0" value="${escapeHtml(room.rate)}" placeholder="Room rate" aria-label="Room rate">
       </div>
     </div>
@@ -179,7 +179,7 @@ function updatePreview() {
   setText('outTime', values.outTime);
 
   roomRows.innerHTML = rooms.map((room, index) => {
-    const adults = `${room.count || 0} ${locale.adults}`;
+    const adults = room.count ?? '';
     return `<tr>
       <td><span class="text-clamp">${String(index + 1).padStart(2, '0')}</span></td>
       <td><span class="text-clamp">1</span></td>
